@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "376367729029",
+    "project_id": "psychologycareapps",
+    "storage_bucket": "psychologycareapps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376367729029:android:3b2ab46361dc1d2c0b5cec",
+        "android_client_info": {
+          "package_name": "com.example.psychologycareapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376367729029-c7egpfisgssg82tdcm194agg43s41ktv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLqXEwhQ1E7RxtkBYjEEqsXl4tf5t5iAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376367729029-c7egpfisgssg82tdcm194agg43s41ktv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
