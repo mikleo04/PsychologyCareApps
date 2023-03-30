@@ -9,12 +9,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.psychologycareapps.adapter.EmotionAdapter
+import com.example.psychologycareapps.adapter.RecommendationAdapter
 import com.example.psychologycareapps.databinding.FragmentHomeBinding
 import com.example.psychologycareapps.model.ModelEmotion
+import com.example.psychologycareapps.model.ModelRecommendation
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
     private var binding : FragmentHomeBinding? = null
     lateinit var rvEmotion : RecyclerView
+    lateinit var rvRecommendation : RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +37,16 @@ class HomeFragment : Fragment() {
         rvEmotion.setHasFixedSize(true)
         rvEmotion.layoutManager = lm
         rvEmotion.adapter = adapterEmotion
+
+        //Recycle view musik
+        val lmRecommendation = LinearLayoutManager(activity)
+        lmRecommendation.orientation = LinearLayoutManager.VERTICAL
+        rvRecommendation = view.findViewById(R.id.rv_recommendation)
+
+        val adapterRecommendation = RecommendationAdapter(ArrayRecommendation, activity)
+        rvRecommendation.setHasFixedSize(true)
+        rvRecommendation.layoutManager = lmRecommendation
+        rvRecommendation.adapter = adapterRecommendation
 
 
         return view
@@ -74,6 +88,38 @@ class HomeFragment : Fragment() {
 
         return arrayemotion
     }
+
+    val ArrayRecommendation :ArrayList<ModelRecommendation>get() {
+        val arrayrecommendation = ArrayList<ModelRecommendation>()
+
+        //1
+        val musik1 = ModelRecommendation()
+        musik1.albumImage = R.drawable.cover_tulus
+        musik1.judulMusik = "Langit Abu-Abu"
+        musik1.penyanyi = "Tulus"
+        arrayrecommendation.add(musik1)
+        //1
+        val musik2 = ModelRecommendation()
+        musik2.albumImage = R.drawable.mahalini
+        musik2.judulMusik = "Sial"
+        musik2.penyanyi = "Mahalini"
+        arrayrecommendation.add(musik2)
+        //1
+        val musik3 = ModelRecommendation()
+        musik3.albumImage = R.drawable.rizky_febian
+        musik3.judulMusik = "Tak Lagi Sama"
+        musik3.penyanyi = "Rizky Febian"
+        arrayrecommendation.add(musik3)
+        //1
+        val musik4 = ModelRecommendation()
+        musik4.albumImage = R.drawable.yura_yunita
+        musik4.judulMusik = "Tutur Batin"
+        musik4.penyanyi = "Yura Yunita"
+        arrayrecommendation.add(musik4)
+
+        return arrayrecommendation
+    }
+
 
     companion object {
         @JvmStatic

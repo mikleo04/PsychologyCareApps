@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    app:cardCornerRadius="10dp"
+    android:layout_marginBottom="10dp"
+    android:elevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/iv_album"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:src="@drawable/cover_tulus"/>
+        <LinearLayout
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_judulmusik"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Langit Abu-Abu"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:maxLines="1"/>
+
+            <TextView
+                android:id="@+id/tv_penyanyi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Tulus"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/baseline_play_circle"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/gray"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
