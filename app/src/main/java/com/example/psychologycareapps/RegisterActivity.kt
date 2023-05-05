@@ -4,13 +4,18 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PatternMatcher
+import android.util.Log
 import android.util.Patterns
 import android.widget.TextView
 import android.widget.Toast
 import com.example.psychologycareapps.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.delay
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -23,6 +28,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+
 
         binding.tvLoginNow.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
@@ -89,20 +95,49 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            RegisterFirebase(name, username, age, contact, email, password)
+            RegisterFirebase(email, password, name, username, age, contact)
+
         }
     }
 
-    private fun RegisterFirebase(name: String, username: String, age: String, contact: String, email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) {
-                if (it.isSuccessful) {
-                    Toast.makeText(this, "Register Berhasil", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, OnboardingActivity::class.java)  // belum pasti
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "${it.exception?.message}", Toast.LENGTH_SHORT)   .show()
+    private fun SaveDatauser(email: String, password: String, name: String, username: String, age: String, contact: String) {
+        val ref = FirebaseDatabase.getInstance().getReference("users")
+        val uid = auth.uid       //auth.currentUser?.uid (get uid user yg sedang login)
+        val user = User(uid, email, name, username, age, contact)
+        Log.d("TAG", uid.toString())
+
+        if (uid != null) {
+            ref.child(uid).setValue(user)
+                .addOnCompleteListener{
+                    if (it.isSuccessful) {
+                        auth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(this) {
+                                if (it.isSuccessful) {
+                                    Toast.makeText(this, "Selamat datang $email", Toast.LENGTH_SHORT).show()
+
+                                } else {
+                                    Toast.makeText(this, "${it.exception?.message}", Toast.LENGTH_SHORT)   .show()
+                                }
+                            }
+                        val intent = Intent(this, OnboardingActivity::class.java)  // belum pasti
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, "${it.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
+        }
     }
+
+    private fun RegisterFirebase(email: String, password: String, name: String, username: String, age: String, contact: String) {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) {
+                    if (it.isSuccessful) {
+                            SaveDatauser(email, password, name, username, age, contact)
+                    } else {
+                        Toast.makeText(this, "${it.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+
+
 }

@@ -2,6 +2,7 @@
   "project_info": {
     "project_number": "376367729029",
     "project_id": "psychologycareapps",
+    "firebase_url" : "https://psychologycareapps-default-rtdb.asia-southeast1.firebasedatabase.app",
     "storage_bucket": "psychologycareapps.appspot.com"
   },
   "client": [

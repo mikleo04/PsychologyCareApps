@@ -7,17 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.example.psychologycareapps.adapter.EmotionAdapter
 import com.example.psychologycareapps.adapter.RecommendationAdapter
 import com.example.psychologycareapps.databinding.FragmentHomeBinding
-import com.example.psychologycareapps.model.ModelEmotion
 import com.example.psychologycareapps.model.ModelRecommendation
-import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
     private var binding : FragmentHomeBinding? = null
-    lateinit var rvEmotion : RecyclerView
     lateinit var rvRecommendation : RecyclerView
 
     override fun onCreateView(
@@ -28,17 +23,7 @@ class HomeFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_home, container, false)
 
 
-        // Recycler view emotion
-        val lm = LinearLayoutManager(activity)
-        lm.orientation = LinearLayoutManager.HORIZONTAL
-        rvEmotion = view.findViewById(R.id.rv_emotion)
-
-        val adapterEmotion = EmotionAdapter(ArrayEmotion, activity)
-        rvEmotion.setHasFixedSize(true)
-        rvEmotion.layoutManager = lm
-        rvEmotion.adapter = adapterEmotion
-
-        //Recycle view musik
+        //Recycle recomendation
         val lmRecommendation = LinearLayoutManager(activity)
         lmRecommendation.orientation = LinearLayoutManager.VERTICAL
         rvRecommendation = view.findViewById(R.id.rv_recommendation)
@@ -52,70 +37,34 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    val ArrayEmotion :ArrayList<ModelEmotion>get() {
-        val arrayemotion = ArrayList<ModelEmotion>()
-
-        //1
-        val emotionDepresi = ModelEmotion()
-        emotionDepresi.emotion = "Depresi"
-        emotionDepresi.emotionImage = R.drawable.depresi
-        arrayemotion.add(emotionDepresi)
-        //2
-        val emotionStress = ModelEmotion()
-        emotionStress.emotion = "Stress"
-        emotionStress.emotionImage = R.drawable.stress
-        arrayemotion.add(emotionStress)
-        //3
-        val emotionSedih = ModelEmotion()
-        emotionSedih.emotion = "Sedih"
-        emotionSedih.emotionImage = R.drawable.sedih
-        arrayemotion.add(emotionSedih)
-        //4
-        val emotionBiasa = ModelEmotion()
-        emotionBiasa.emotion = "Biasa"
-        emotionBiasa.emotionImage = R.drawable.biasa
-        arrayemotion.add(emotionBiasa)
-        //5
-        val emotionSenang = ModelEmotion()
-        emotionSenang.emotion = "Senang"
-        emotionSenang.emotionImage = R.drawable.senang
-        arrayemotion.add(emotionSenang)
-        //6
-        val emotionBahagia = ModelEmotion()
-        emotionBahagia.emotion = "Bahagia"
-        emotionBahagia.emotionImage = R.drawable.bahagia
-        arrayemotion.add(emotionBahagia)
-
-        return arrayemotion
-    }
 
     val ArrayRecommendation :ArrayList<ModelRecommendation>get() {
         val arrayrecommendation = ArrayList<ModelRecommendation>()
 
         //1
-        val musik1 = ModelRecommendation()
-        musik1.albumImage = R.drawable.cover_tulus
-        musik1.judulMusik = "Langit Abu-Abu"
-        musik1.penyanyi = "Tulus"
-        arrayrecommendation.add(musik1)
+        val activity1 = ModelRecommendation()
+        activity1.imageActivity = R.drawable.meditiation
+        activity1.judulActivity = "Meditasi"
+        activity1.deskripsiActivity = "Dengan fokus pada pernapasan dan pikiran yang tenang, meditasi dapat membantu menenangkan pikiran dan tubuh"
+        arrayrecommendation.add(activity1)
+        //2
+        val activity2 = ModelRecommendation()
+        activity2.imageActivity = R.drawable.yoga
+        activity2.judulActivity = "Yoga"
+        activity2.deskripsiActivity = "Latihan yoga termasuk gerakan yang dirancang untuk merilekskan tubuh dan membantu meningkatkan keseimbangan dan fleksibilitas"
+        arrayrecommendation.add(activity2)
         //1
-        val musik2 = ModelRecommendation()
-        musik2.albumImage = R.drawable.mahalini
-        musik2.judulMusik = "Sial"
-        musik2.penyanyi = "Mahalini"
-        arrayrecommendation.add(musik2)
+        val activity3 = ModelRecommendation()
+        activity3.imageActivity = R.drawable.pernapasan
+        activity3.judulActivity = "Pernapasan dalam"
+        activity3.deskripsiActivity = "Dengan mengambil napas dalam-dalam dan menghembuskan napas secara perlahan, dapat membantu merilekskan tubuh dan mengurangi stres"
+        arrayrecommendation.add(activity3)
         //1
-        val musik3 = ModelRecommendation()
-        musik3.albumImage = R.drawable.rizky_febian
-        musik3.judulMusik = "Tak Lagi Sama"
-        musik3.penyanyi = "Rizky Febian"
-        arrayrecommendation.add(musik3)
-        //1
-        val musik4 = ModelRecommendation()
-        musik4.albumImage = R.drawable.yura_yunita
-        musik4.judulMusik = "Tutur Batin"
-        musik4.penyanyi = "Yura Yunita"
-        arrayrecommendation.add(musik4)
+        val activity4 = ModelRecommendation()
+        activity4.imageActivity = R.drawable.jogging
+        activity4.judulActivity = "Olahraga"
+        activity4.deskripsiActivity = "Berolahraga secara teratur dapat membantu merilekskan tubuh dan meningkatkan kesehatan secara keseluruhan"
+        arrayrecommendation.add(activity4)
 
         return arrayrecommendation
     }

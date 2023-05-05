@@ -4,7 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class ModelEmotion (
-    var emotion :String? = null,
-    var emotionImage :Int = 0
-) : Parcelable
+class ModelMoodmusic (
+
+    var backgroundMoodmusic : Int = 0,
+    var moodMusic : String? = null
+):Parcelable

@@ -1,26 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     tools:context=".LibraryFragment">
 
     <ImageView
+        android:id="@+id/iv_profile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/baseline_person"
-        app:tint="@color/green_dark" />
+        android:layout_marginTop="50dp"
+        android:src="@drawable/sad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_profilefullname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Udin Kamaludin"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/poppins_extrabold"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_profile"
+        app:layout_constraintStart_toStartOf="@+id/iv_profile"
+        app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+
+    <TextView
+        android:id="@+id/tv_profileusername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="udin01"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_profilefullname"
+        app:layout_constraintStart_toStartOf="@+id/tv_profilefullname"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profilefullname" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profileusername">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:text="English"
+            android:textColor="@color/black"
+            app:icon="@drawable/language"
+            app:iconGravity="textStart"
+            app:iconTintMode="multiply" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:text="Dark Theme"
+            android:textColor="@color/black"
+            app:icon="@drawable/theme"
+            app:iconTintMode="multiply"
+            app:iconGravity="textStart"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray"
+            android:text="Logout"
+            android:textColor="@color/black"
+            app:icon="@drawable/logout"
+            app:iconTintMode="multiply"
+            app:iconGravity="textStart"/>
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile Fragment"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:fontFamily="@font/poppins_medium"
+        android:text="Version 1.0.0"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

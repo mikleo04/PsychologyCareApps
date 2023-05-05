@@ -13,9 +13,9 @@ import com.example.psychologycareapps.model.ModelRecommendation
 class RecommendationAdapter (var data : ArrayList<ModelRecommendation>, var context: Activity?) : RecyclerView.Adapter<RecommendationAdapter.MyViewHolder>() {
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val albumImage = view.findViewById<ImageView>(R.id.iv_album)
-        val judulMusik = view.findViewById<TextView>(R.id.tv_judulmusik)
-        val penyanyi = view.findViewById<TextView>(R.id.tv_penyanyi)
+        val imageActivity = view.findViewById<ImageView>(R.id.iv_activity)
+        val judulActivity = view.findViewById<TextView>(R.id.tv_judulactivity)
+        val deskripsiActivity = view.findViewById<TextView>(R.id.tv_deskripsi)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -24,9 +24,9 @@ class RecommendationAdapter (var data : ArrayList<ModelRecommendation>, var cont
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.albumImage.setImageResource(data[position].albumImage)
-        holder.judulMusik.text = data[position].judulMusik
-        holder.penyanyi.text = data[position].penyanyi
+        holder.imageActivity.setImageResource(data[position].imageActivity)
+        holder.judulActivity.text = data[position].judulActivity
+        holder.deskripsiActivity.text = data[position].deskripsiActivity
     }
 
     override fun getItemCount(): Int {
