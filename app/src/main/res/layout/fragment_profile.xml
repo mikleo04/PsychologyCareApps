@@ -6,80 +6,167 @@
     android:layout_height="match_parent"
     tools:context=".LibraryFragment">
 
-    <ImageView
-        android:id="@+id/iv_profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/sad"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_profilefullname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Udin Kamaludin"
-        android:layout_marginTop="5dp"
-        android:fontFamily="@font/poppins_extrabold"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_profile"
-        app:layout_constraintStart_toStartOf="@+id/iv_profile"
-        app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
-
-    <TextView
-        android:id="@+id/tv_profileusername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="udin01"
-        android:fontFamily="@font/poppins_medium"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/tv_profilefullname"
-        app:layout_constraintStart_toStartOf="@+id/tv_profilefullname"
-        app:layout_constraintTop_toBottomOf="@+id/tv_profilefullname" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_profileusername">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/gray"
-            android:text="English"
-            android:textColor="@color/black"
-            app:icon="@drawable/language"
-            app:iconGravity="textStart"
-            app:iconTintMode="multiply" />
+            android:layout_height="match_parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/gray"
-            android:text="Dark Theme"
-            android:textColor="@color/black"
-            app:icon="@drawable/theme"
-            app:iconTintMode="multiply"
-            app:iconGravity="textStart"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/gray"
-            android:text="Logout"
-            android:textColor="@color/black"
-            app:icon="@drawable/logout"
-            app:iconTintMode="multiply"
-            app:iconGravity="textStart"/>
+            <TextView
+                android:id="@+id/tv_profilefullname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/poppins_extrabold"
+                android:text="Udin Kamaludin"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/iv_profile"
+                app:layout_constraintStart_toStartOf="@+id/iv_profile"
+                app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_profileusername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="udin01"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_profilefullname"
+                app:layout_constraintStart_toStartOf="@+id/tv_profilefullname"
+                app:layout_constraintTop_toBottomOf="@+id/tv_profilefullname" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_profileusername">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Email"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_bold"/>
+
+                    <TextView
+                        android:id="@+id/tv_profileemail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="buyuang@gmail.com"
+                        android:textAlignment="viewEnd"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="5dp"
+                    android:alpha="0.5"
+                    android:background="@color/black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Umur"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:id="@+id/tv_profileage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="17"
+                        android:textAlignment="viewEnd"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="5dp"
+                    android:alpha="0.5"
+                    android:background="@color/black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="No.hp"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <TextView
+                        android:id="@+id/tv_profilecontact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="083176935269"
+                        android:textAlignment="viewEnd"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_regular"/>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="5dp"
+                    android:alpha="0.5"
+                    android:background="@color/black"/>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
     <TextView
         android:layout_width="wrap_content"

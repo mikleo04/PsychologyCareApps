@@ -81,7 +81,9 @@ dependencies {
     // firebase database
     implementation'com.google.firebase:firebase-database:20.2.0'
     implementation'com.google.firebase:firebase-storage-ktx:20.1.0'
-    implementation 'com.google.firebase:firebase-database-ktx:20.2.0'//
+    implementation 'com.google.firebase:firebase-database-ktx:20.2.0'
+    //circle image
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
 
 
 }
