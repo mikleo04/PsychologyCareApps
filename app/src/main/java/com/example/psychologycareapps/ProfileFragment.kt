@@ -13,11 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.values
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.ByteArrayOutputStream
 
@@ -34,7 +35,6 @@ class ProfileFragment : Fragment() {
 
     private lateinit var imagUri : Uri
     private lateinit var database : DatabaseReference
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,19 +47,81 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val user = FirebaseAuth.getInstance().currentUser
+        Log.d("user", user.toString())
+
+        if (user != null) {
+            if (user.photoUrl != null) {
+                Picasso.get().load(user.photoUrl).into(iv_profile)
+                Picasso.get().load(user.photoUrl).into(iv_profileedit)
+            } else {
+                iv_profile.setImageResource(R.drawable.user)
+            }
+        }
+
+        btn_edit.setOnClickListener {
+            ly_profile.visibility = View.GONE
+            ly_editprofile.visibility = View.VISIBLE
+        }
 
         readData(uid)
 
-        iv_profile.setOnClickListener{
+        btn_saveprofile.setOnClickListener {
+            val image = when{
+                ::imagUri.isInitialized -> imagUri
+                user?.photoUrl == null -> Uri.parse("R.drawable.user.png")
+                else -> user.photoUrl
+            }
 
+            val name = et_profileeditname.text.toString()
+            val username = et_profileeditusername.text.toString()
+            val email = et_profileeditemail.text.toString()
+            val age = et_profileeditage.text.toString()
+            val contact = et_profileeditcontact.text.toString()
+
+            UserProfileChangeRequest.Builder()
+                .setPhotoUri(image)
+                .build().also {
+                    user?.updateProfile(it)?.addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Toast.makeText(activity, "Photo profile berhasil diupdate", Toast.LENGTH_SHORT).show()
+                        }else {
+                            Toast.makeText(activity, "Photo Profile gagal diupdate", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+            updateData(name, username, age, contact, uid)
+
+        }
+
+        iv_profileedit.setOnClickListener{
             inntentCamera()
-
         }
     }
 
+    private fun updateData(name: String, username: String, age: String, contact: String, uid: String?) {
+        database = FirebaseDatabase.getInstance().getReference("users").child(uid!!)
+        val user = mapOf<String, String>(
+            "name" to name,
+            "username" to username,
+            "age" to age,
+            "contact" to contact
+        )
+
+        database.updateChildren(user).addOnSuccessListener {
+            Toast.makeText(activity, "Data berhasil diupdate", Toast.LENGTH_SHORT).show()
+            ly_profile.visibility = View.VISIBLE
+            ly_editprofile.visibility= View.GONE
+        }.addOnFailureListener {
+            Toast.makeText(activity, "Data gagal diupdate", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //read data profile
     private fun readData(uid: String?) {
         Log.d("Id user", uid.toString())
-        database = FirebaseDatabase.getInstance().getReference("Users").child(uid!!)
+        database = FirebaseDatabase.getInstance().getReference("users").child(uid!!)
         database.addListenerForSingleValueEvent(object  : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "loadPost:onCancelled", error.toException())
@@ -78,6 +140,12 @@ class ProfileFragment : Fragment() {
                 tv_profileage.text = age.toString()
                 tv_profilecontact.text = contact.toString()
 
+                et_profileeditname.setText(name.toString())
+                et_profileeditusername.setText(username.toString())
+                et_profileeditage.setText(age.toString())
+                et_profileeditcontact.setText(contact.toString())
+                et_profileeditemail.setText(email.toString())
+
                 Log.d("Data name", name.toString())
 
                 Toast.makeText(activity, "Data Berhasil didapatkan", Toast.LENGTH_SHORT).show()
@@ -86,6 +154,7 @@ class ProfileFragment : Fragment() {
         })
     }
 
+    //upload foto profile
     @Suppress("DEPRECATION")
     private fun inntentCamera() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
@@ -121,7 +190,7 @@ class ProfileFragment : Fragment() {
                     ref.downloadUrl.addOnCompleteListener{
                         it.result?.let {
                             imagUri = it
-                            iv_profile.setImageBitmap(imgBitmap)
+                            iv_profileedit.setImageBitmap(imgBitmap)
                         }
                     }
                 }

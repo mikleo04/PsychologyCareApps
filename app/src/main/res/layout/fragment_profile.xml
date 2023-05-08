@@ -16,8 +16,20 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ly_profile"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/btn_edit"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/baseline_edit"
+                app:layout_constraintBottom_toTopOf="@+id/tv_profileusername"
+                app:layout_constraintStart_toEndOf="@+id/tv_profilefullname"
+                app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"
@@ -162,6 +174,187 @@
                     android:background="@color/black"/>
 
             </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ly_editprofile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profileedit"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ly_formeditprofile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_profileedit">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Name"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxStrokeWidth="1dp"
+                    app:hintTextColor="@color/gray"
+                    app:shapeAppearanceOverlay="@style/Button4"
+                    app:startIconDrawable="@drawable/baseline_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_profileeditname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Username"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxStrokeWidth="1dp"
+                    app:hintTextColor="@color/gray"
+                    app:shapeAppearanceOverlay="@style/Button4"
+                    app:startIconDrawable="@drawable/baseline_username">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_profileeditusername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Umur"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxStrokeWidth="1dp"
+                    app:hintTextColor="@color/gray"
+                    app:shapeAppearanceOverlay="@style/Button4"
+                    app:startIconDrawable="@drawable/baseline_age">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_profileeditage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="0,1,2,3,4,5,6,7,8,9,*,qwertzuiopasdfghjklyxcvbnm,_,-"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="No. Hp"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxStrokeWidth="1dp"
+                    app:hintTextColor="@color/gray"
+                    app:shapeAppearanceOverlay="@style/Button4"
+                    app:startIconDrawable="@drawable/baseline_phone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_profileeditcontact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="phone"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Email"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxStrokeWidth="1dp"
+                    app:hintTextColor="@color/gray"
+                    app:shapeAppearanceOverlay="@style/Button4"
+                    app:startIconDrawable="@drawable/base_email">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_profileeditemail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Password"
+                    app:boxStrokeColor="@color/gray"
+                    app:boxStrokeWidth="1dp"
+                    app:endIconMode="password_toggle"
+                    app:hintTextColor="@color/gray"
+                    app:shapeAppearanceOverlay="@style/Button4"
+                    app:startIconDrawable="@drawable/baseline_password">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_profileeditpassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPassword"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_saveprofile"
+                android:layout_width="330dp"
+                android:layout_height="57dp"
+                android:layout_marginBottom="10dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/button_shape"
+                android:backgroundTint="@color/green_dark"
+                android:text="Save"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ly_formeditprofile" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

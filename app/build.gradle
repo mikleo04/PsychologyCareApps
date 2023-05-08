@@ -84,6 +84,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:20.2.0'
     //circle image
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+    //load imagae from url
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
 }
