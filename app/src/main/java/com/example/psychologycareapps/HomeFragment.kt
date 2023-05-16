@@ -1,5 +1,6 @@
 package com.example.psychologycareapps
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.psychologycareapps.adapter.RecommendationAdapter
 import com.example.psychologycareapps.databinding.FragmentHomeBinding
 import com.example.psychologycareapps.model.ModelRecommendation
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
-    private var binding : FragmentHomeBinding? = null
     lateinit var rvRecommendation : RecyclerView
 
     override fun onCreateView(
@@ -20,21 +21,28 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        barChart.animation.duration = animationDuration
+        barChart.animate(barSet)
 
 
         //Recycle recomendation
         val lmRecommendation = LinearLayoutManager(activity)
         lmRecommendation.orientation = LinearLayoutManager.VERTICAL
-        rvRecommendation = view.findViewById(R.id.rv_recommendation)
+        rvRecommendation = view.findViewById(R.id.rv_recommendation)!!
 
         val adapterRecommendation = RecommendationAdapter(ArrayRecommendation, activity)
         rvRecommendation.setHasFixedSize(true)
         rvRecommendation.layoutManager = lmRecommendation
         rvRecommendation.adapter = adapterRecommendation
 
-
-        return view
     }
 
 
@@ -76,11 +84,18 @@ class HomeFragment : Fragment() {
             HomeFragment().apply {
                 arguments = Bundle().apply {}
             }
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
+            private val barSet = listOf(
+                "JAN" to 4F,
+                "FEB" to 7F,
+                "MAR" to 2F,
+                "MAY" to 2.3F,
+                "APR" to 5F,
+                "JUN" to 4F
+            )
+
+            private const val animationDuration = 1000L
+
     }
 
 }
