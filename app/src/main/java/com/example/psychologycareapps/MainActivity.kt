@@ -1,12 +1,10 @@
 package com.example.psychologycareapps
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
-import com.example.psychologycareapps.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -22,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         btm_navigation.show(0)
         btm_navigation.add(MeowBottomNavigation.Model(0,R.drawable.baseline_home))
         btm_navigation.add(MeowBottomNavigation.Model(1,R.drawable.baseline_library))
-        btm_navigation.add(MeowBottomNavigation.Model(2,R.drawable.baseline_bookmark))
+        btm_navigation.add(MeowBottomNavigation.Model(2,R.drawable.baseline_note))
         btm_navigation.add(MeowBottomNavigation.Model(3,R.drawable.baseline_person))
 
         btm_navigation.setOnClickMenuListener {
@@ -34,8 +32,8 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "library Fragment",Toast.LENGTH_SHORT).show()
                     replaceFragment(LibraryFragment.newInstance())
                 }2 -> {
-                    Toast.makeText(this, "bookmarks Fragment",Toast.LENGTH_SHORT).show()
-                    replaceFragment(BookmarksFragment.newInstance())
+                    Toast.makeText(this, "notes Fragment",Toast.LENGTH_SHORT).show()
+                    replaceFragment(NotesFragment.newInstance())
                 }3 -> {
                     Toast.makeText(this, "profile Fragment",Toast.LENGTH_SHORT).show()
                     replaceFragment(ProfileFragment.newInstance())

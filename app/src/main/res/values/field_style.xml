@@ -4,4 +4,11 @@
         <item name="cornerSize">20%</item>
         <item name="strokeColor">@color/gray</item>
     </style>
+
+    <style name="multi_line">
+        <item name="cornerSize">5%</item>
+        <item name="strokeColor">@color/gray</item>
+    </style>
+
+
 </resources>

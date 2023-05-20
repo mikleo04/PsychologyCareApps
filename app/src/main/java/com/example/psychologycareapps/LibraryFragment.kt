@@ -50,7 +50,6 @@ class LibraryFragment : Fragment(), View.OnClickListener {
         if (v.id == R.id.cv_stress) {
             val stressFragment = StressFragment()
             val fragmentManager = parentFragmentManager
-            val fragmentInstance = fragmentManager.findFragmentByTag("Stress_Fragment")
             fragmentManager.beginTransaction().apply {
                 replace(
                     R.id.fragment_container,
