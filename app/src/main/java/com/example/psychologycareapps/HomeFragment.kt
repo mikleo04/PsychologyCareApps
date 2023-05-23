@@ -3,6 +3,7 @@ package com.example.psychologycareapps
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.psychologycareapps.adapter.RecommendationAdapter
 import com.example.psychologycareapps.databinding.FragmentHomeBinding
 import com.example.psychologycareapps.model.ModelRecommendation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 class HomeFragment : Fragment() {
     lateinit var rvRecommendation : RecyclerView
@@ -31,7 +37,45 @@ class HomeFragment : Fragment() {
 
 
         barChart.animation.duration = animationDuration
-        barChart.animate(barSet)
+//        barChart.animate(barSet)
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val time = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("MMMM-yyyy")
+        val current = formatter.format(time)
+        val ref = FirebaseFirestore.getInstance()
+            .collection("Panas")
+            .document(uid!!)
+            .collection(current)
+            .get()
+            .addOnSuccessListener {documents ->
+                var data = arrayListOf<Pair<String, Float>>()
+                var counter = 1;
+                for (document in documents) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+//                    data.put("test", document.get("value").toString().toFloat())
+                    var v = document.get("value").toString()
+                    var score = if (v == "positif") 2F else 1F
+                    data.add(Pair(counter.toString(), score))
+                    counter++
+
+                }
+                barChart.animate(data)
+        }
+        .addOnFailureListener { exception ->
+            Log.d(TAG, "get failed with ", exception)
+        }
+
+//        var data = listOf(
+//            "JAN" to 100F,
+//            "FEB" to 7F,
+//            "MAR" to 2F,
+//            "MAY" to 2.3F,
+//            "APR" to 5F,
+//            "JUN" to 4F
+//        )
+//        barChart.animate(data)
+
 
         btn_panastest.setOnClickListener {
             val intent = Intent(this@HomeFragment.requireContext(), PanasActivity::class.java)
@@ -100,17 +144,17 @@ class HomeFragment : Fragment() {
                 arguments = Bundle().apply {}
             }
 
-            private val barSet = listOf(
-                "JAN" to 4F,
-                "FEB" to 7F,
-                "MAR" to 2F,
-                "MAY" to 2.3F,
-                "APR" to 5F,
-                "JUN" to 4F
-            )
+//            private val barSet = listOf(
+//                "JAN" to 100F,
+//                "FEB" to 7F,
+//                "MAR" to 2F,
+//                "MAY" to 2.3F,
+//                "APR" to 5F,
+//                "JUN" to 4F
+//            )
 
-            private const val animationDuration = 1000L
-
+        private const val animationDuration = 1000L
+        private const val TAG = "HomeFragment"
     }
 
 }
