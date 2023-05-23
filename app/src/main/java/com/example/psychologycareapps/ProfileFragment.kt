@@ -62,6 +62,7 @@ class ProfileFragment : Fragment() {
         btn_edit.setOnClickListener {
             ly_profile.visibility = View.GONE
             ly_editprofile.visibility = View.VISIBLE
+            btn_logout.visibility = View.GONE
         }
 
         readData(uid)
@@ -97,6 +98,13 @@ class ProfileFragment : Fragment() {
 
         iv_profileedit.setOnClickListener{
             inntentCamera()
+        }
+
+        btn_logout.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this@ProfileFragment.requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
         }
     }
 

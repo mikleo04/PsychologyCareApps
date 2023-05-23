@@ -99,6 +99,8 @@ dependencies {
     ///chart
     implementation 'com.diogobernardino:williamchart:3.10.1'
 
+    implementation 'com.airbnb.android:lottie:3.4.0'
+
 
 
 }

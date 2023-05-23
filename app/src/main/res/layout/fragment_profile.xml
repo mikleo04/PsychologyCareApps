@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".LibraryFragment">
 
+    <ImageView
+        android:id="@+id/btn_logout"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/logout"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +23,7 @@
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/btn_logout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ly_profile"
@@ -87,18 +97,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
                         android:text="Email"
-                        android:textSize="18sp"
-                        android:fontFamily="@font/poppins_bold"/>
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tv_profileemail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/poppins_regular"
                         android:text="buyuang@gmail.com"
                         android:textAlignment="viewEnd"
-                        android:fontFamily="@font/poppins_regular"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -107,7 +117,7 @@
                     android:layout_height="1dp"
                     android:layout_margin="5dp"
                     android:alpha="0.5"
-                    android:background="@color/black"/>
+                    android:background="@color/black" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -119,18 +129,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
                         android:text="Umur"
-                        android:textSize="18sp"
-                        android:fontFamily="@font/poppins_bold" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tv_profileage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/poppins_regular"
                         android:text="17"
                         android:textAlignment="viewEnd"
-                        android:fontFamily="@font/poppins_regular"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -139,7 +149,7 @@
                     android:layout_height="1dp"
                     android:layout_margin="5dp"
                     android:alpha="0.5"
-                    android:background="@color/black"/>
+                    android:background="@color/black" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -151,19 +161,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
                         android:text="No.hp"
-                        android:textSize="18sp"
-                        android:fontFamily="@font/poppins_bold" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tv_profilecontact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/poppins_regular"
                         android:text="083176935269"
                         android:textAlignment="viewEnd"
-                        android:textSize="18sp"
-                        android:fontFamily="@font/poppins_regular"/>
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -171,7 +181,7 @@
                     android:layout_height="1dp"
                     android:layout_margin="5dp"
                     android:alpha="0.5"
-                    android:background="@color/black"/>
+                    android:background="@color/black" />
 
             </LinearLayout>
 
@@ -345,8 +355,8 @@
                 android:id="@+id/btn_saveprofile"
                 android:layout_width="330dp"
                 android:layout_height="57dp"
-                android:layout_marginBottom="10dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/button_shape"
                 android:backgroundTint="@color/green_dark"
                 android:text="Save"

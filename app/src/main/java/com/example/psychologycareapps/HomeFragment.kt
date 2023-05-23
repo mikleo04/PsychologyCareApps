@@ -1,5 +1,6 @@
 package com.example.psychologycareapps
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -31,6 +32,16 @@ class HomeFragment : Fragment() {
 
         barChart.animation.duration = animationDuration
         barChart.animate(barSet)
+
+        btn_panastest.setOnClickListener {
+            val intent = Intent(this@HomeFragment.requireContext(), PanasActivity::class.java)
+            startActivity(intent)
+        }
+
+        btn_dasstest.setOnClickListener {
+            val intent = Intent(this@HomeFragment.requireContext(), DassActivity::class.java)
+            startActivity(intent)
+        }
 
 
         //Recycle recomendation
