@@ -1,9 +1,11 @@
 package com.example.psychologycareapps.adapter
 
 import android.app.Activity
+import android.nfc.Tag
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -26,11 +28,31 @@ class QuestionPanasAdapter (var data : ArrayList<ModelQuestionPanas>, var contex
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val question = data.get(position)
 
         holder.question.text = data[position].question
-        holder.groupAnswer.setOnClickListener{
-            
+        holder.groupAnswer.setOnCheckedChangeListener{ group, checkedId ->
+
+            val ans = context?.findViewById<RadioButton>(checkedId)
+
+            data.forEach {
+                data[position].answer = when(ans?.text) {
+                    "Hampir Tidak Pernah" -> 1
+                    "Jarang" -> 2
+                    "Kadang - Kadang" -> 3
+                    "Sering" -> 4
+                    "Hampir Selalu" -> 5
+                    else -> 0
+                }
+            }
+
         }
+    }
+
+    fun getSelectedItemData() : ArrayList<ModelQuestionPanas> {
+        return data
+    }
+
+    companion object{
+        private const val TAG = "QuestionPanasAdapter"
     }
 }

@@ -3,6 +3,8 @@ package com.example.psychologycareapps
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.service.controls.ControlsProviderService.TAG
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.psychologycareapps.adapter.RecommendationAdapter
 import com.example.psychologycareapps.databinding.FragmentHomeBinding
 import com.example.psychologycareapps.model.ModelRecommendation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
     lateinit var rvRecommendation : RecyclerView
@@ -30,8 +37,33 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        barChart.animation.duration = animationDuration
-        barChart.animate(barSet)
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val time = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("MMMM-yyyy")
+        val current = formatter.format(time)
+        val ref = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("mood").document("value").collection(current)
+        ref.get().addOnSuccessListener {documents ->
+            var data = arrayListOf<Pair<String,Float>>()
+            var counter = 1
+            for (document in documents) {
+                var value = document.get("value").toString()
+                Log.d(TAG, "dapat ${document.get("value").toString()}")
+                var score = if (value == "positif") 2F else 1F
+                data.add(Pair(counter.toString(), score))
+                counter++
+            }
+            if (data.size == 1) {
+                data.add(Pair("", 0F))
+            }
+
+            Log.d(TAG, "onViewCreated: ${data.size}")
+            barChart.animation.duration = animationDuration
+            barChart.animate(data)
+        }
+        .addOnFailureListener {exception ->
+            Log.d(TAG, "get failed data", exception)
+        }
+
 
         btn_panastest.setOnClickListener {
             val intent = Intent(this@HomeFragment.requireContext(), PanasActivity::class.java)
@@ -100,14 +132,14 @@ class HomeFragment : Fragment() {
                 arguments = Bundle().apply {}
             }
 
-            private val barSet = listOf(
-                "JAN" to 4F,
-                "FEB" to 7F,
-                "MAR" to 2F,
-                "MAY" to 2.3F,
-                "APR" to 5F,
-                "JUN" to 4F
-            )
+//            private val barSet = listOf(
+//                "JAN" to 4F,
+//                "FEB" to 7F,
+//                "MAR" to 2F,
+//                "MAY" to 2.3F,
+//                "APR" to 5F,
+//                "JUN" to 4F
+//            )
 
             private const val animationDuration = 1000L
 

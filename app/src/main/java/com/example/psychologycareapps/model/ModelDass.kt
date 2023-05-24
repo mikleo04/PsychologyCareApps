@@ -1,6 +1,8 @@
 package com.example.psychologycareapps.model
 
 class ModelDass (
-    var statemant : String? = null,
-    var answer : String? = null
+    var id : String? = null,
+    var type : String? = null,
+    var statement : String? = null,
+    var answer : Int = 0
 )
