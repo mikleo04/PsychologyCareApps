@@ -91,8 +91,8 @@ class HomeFragment : Fragment() {
 
         // get data mood
         refMood.get().addOnSuccessListener {documents ->
+            var tgl = 1
             for (document in documents) {
-                var tgl = 1
                 var value = document.get("value").toString()
                 Log.d(TAG, "mood value ${document.get("value")}")
                 var score = if (value == "positif") 2F else 1F
@@ -115,8 +115,8 @@ class HomeFragment : Fragment() {
 
         // get data depresi
         refDepresi.get().addOnSuccessListener { documents ->
+            var week = 1
             for (document in documents) {
-                var week = 1
                 var value = document.get("value").toString().toInt()
                 Log.d(TAG, "depresi value ${document.get("value")}")
                 var score = value / 2
@@ -139,8 +139,8 @@ class HomeFragment : Fragment() {
 
         //get data stress
         refStress.get().addOnSuccessListener { documents ->
+            var week = 1
             for (document in documents) {
-                var week = 1
                 var value = document.get("value").toString().toInt()
                 Log.d(TAG, "stress value ${document.get("value")}")
                 var score = value / 2
@@ -162,8 +162,8 @@ class HomeFragment : Fragment() {
 
         //get data Anxiety
         refAnxiety.get().addOnSuccessListener { documents ->
+            var week = 1
             for (document in documents) {
-                var week = 1
                 var value = document.get("value").toString().toInt()
                 Log.d(TAG, "anxiety value ${document.get("value")}")
                 var score = value / 2
