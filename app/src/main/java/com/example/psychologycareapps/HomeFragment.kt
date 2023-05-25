@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.service.controls.ControlsProviderService.TAG
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.example.psychologycareapps.adapter.BarchartAdapter
 import com.example.psychologycareapps.adapter.RecommendationAdapter
 import com.example.psychologycareapps.model.ModelBarchart
@@ -19,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class HomeFragment : Fragment() {
     lateinit var rvRecommendation : RecyclerView
@@ -192,6 +194,10 @@ class HomeFragment : Fragment() {
             ModelBarchart("Stress", stressData),
             ModelBarchart("Anxiety", anxietyData)
         )
+        /*Snap*/
+        val snapHelper: SnapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(rvBarchart)
+        /*End of Snap*/
         adapterBarchart = BarchartAdapter(chartData, requireActivity())
         rvBarchart.setHasFixedSize(true)
         rvBarchart.layoutManager = lmBarchart
