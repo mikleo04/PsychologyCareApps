@@ -40,20 +40,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.db.williamchart.view.BarChartView
-                    android:id="@+id/barChart"
-                    android:layout_width="300dp"
-                    android:layout_height="150dp"
-                    app:chart_axis="x"
-                    app:chart_barsColor="@color/black"
-                    app:chart_barsRadius="4dp"
-                    app:chart_labelsColor="#0D47A1"
-                    app:chart_labelsSize="10sp"
-                    app:chart_spacing="15dp"
-                    app:layout_constraintStart_toStartOf="parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_barchart"
+                    android:layout_width="380dp"
+                    android:layout_height="165dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/imageView2"
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2"
+                    tools:listitem="@layout/item_barchart"/>
 
                 <TextView
                     android:id="@+id/textView"
