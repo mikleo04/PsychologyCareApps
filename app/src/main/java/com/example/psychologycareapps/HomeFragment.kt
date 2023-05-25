@@ -23,12 +23,24 @@ import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
     lateinit var rvRecommendation : RecyclerView
-    lateinit var rvBarchart : RecyclerView
-    var data = arrayListOf<Pair<String,Float>>()
-    var dataDepresi = arrayListOf<Pair<String,Float>>()
-    var dataStress = arrayListOf<Pair<String,Float>>()
-    var dataAnxiety = arrayListOf<Pair<String,Float>>()
+    // null biar bisa di check sebelum akses
+    var adapterBarchart: BarchartAdapter? = null
 
+    //    lateinit var rvBarchart : RecyclerView
+//    var data = arrayListOf<Pair<String,Float>>() // nama var membuat gagal paham
+//    var dataDepresi = arrayListOf<Pair<String,Float>>()
+//    var dataStress = arrayListOf<Pair<String,Float>>()
+//    var dataAnxiety = arrayListOf<Pair<String,Float>>()
+
+    val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+    //no idea nama var yg cocok :v, aku pribadi lebih prefer yg ga berulang di inline kan, lebih mudah di baca
+    val current = SimpleDateFormat("MMMM-yyyy").format(Calendar.getInstance().time)
+
+    val moodData = arrayListOf<Pair<String, Float>>()
+    val depresiData = arrayListOf<Pair<String, Float>>()
+    val stressData = arrayListOf<Pair<String, Float>>()
+    val anxietyData = arrayListOf<Pair<String, Float>>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,93 +53,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
-        val time = Calendar.getInstance().time
-        val formatter = SimpleDateFormat("MMMM-yyyy")
-        val current = formatter.format(time)
-        val refDepresi = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("Depresi").document("value").collection(current)
-        val refStress = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("Stress").document("value").collection(current)
-        val refAnxiety = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("Anxiety").document("value").collection(current)
-        val refMood = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("mood").document("value").collection(current)
-
-        // get data mood
-        refMood.get().addOnSuccessListener {documents ->
-            for (document in documents) {
-                var tgl = 1
-                var value = document.get("value").toString()
-                Log.d(TAG, "mood value ${document.get("value")}")
-                var score = if (value == "positif") 2F else 1F
-
-                data.add(Pair(tgl.toString(), score))
-                tgl++
-            }
-            if (data.size == 1) {
-                data.add(Pair("", 0F))
-            }
-
-            Log.d(TAG, "onViewCreated: ${data.size}")
-//            barChart.animation.duration = animationDuration
-//            barChart.animate(data)
-        }.addOnFailureListener {exception ->
-            Log.d(TAG, "get failed data mood", exception)
-        }
-
-        // get data depresi
-        refDepresi.get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                var week = 1
-                var value = document.get("value").toString().toInt()
-                Log.d(TAG, "depresi value ${document.get("value")}")
-                var score = value / 2
-                dataDepresi.add(Pair(week.toString(), score.toFloat()))
-                week++
-            }
-            if (dataDepresi.size == 1) {
-                dataDepresi.add(Pair("", 0F))
-            }
-            Log.d(TAG, "onViewCreated: ${dataDepresi.size}")
-            return@addOnSuccessListener
-        } .addOnFailureListener {exception->
-            Log.d(TAG, "get failed data depresi", exception)
-        }
-
-        //get data stress
-        refStress.get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                var week = 1
-                var value = document.get("value").toString().toInt()
-                Log.d(TAG, "stress value ${document.get("value")}")
-                var score = value / 2
-                dataStress.add(Pair(week.toString(), score.toFloat()))
-                week++
-            }
-            if (dataStress.size == 1) {
-                dataStress.add(Pair("", 0F))
-            }
-            Log.d(TAG, "onViewCreated: ${dataStress.size}")
-        } .addOnFailureListener {exception->
-            Log.d(TAG, "get failed data stress", exception)
-        }
-
-        //get data Anxiety
-        refAnxiety.get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                var week = 1
-                var value = document.get("value").toString().toInt()
-                Log.d(TAG, "anxiety value ${document.get("value")}")
-                var score = value / 2
-                dataAnxiety.add(Pair(week.toString(), score.toFloat()))
-                week++
-            }
-            if (dataAnxiety.size == 1) {
-                dataAnxiety.add(Pair("", 0F))
-            }
-            Log.d(TAG, "onViewCreated: ${dataAnxiety.size}")
-        } .addOnFailureListener {exception->
-            Log.d(TAG, "get failed data anxiety", exception)
-        }
-
-
+        // init button, and basic functionality
         btn_panastest.setOnClickListener {
             val intent = Intent(this@HomeFragment.requireContext(), PanasActivity::class.java)
             startActivity(intent)
@@ -137,17 +63,11 @@ class HomeFragment : Fragment() {
             val intent = Intent(this@HomeFragment.requireContext(), DassActivity::class.java)
             startActivity(intent)
         }
-
-        //Recycle Barchart
-        val lmBarchart = LinearLayoutManager(activity)
-        lmBarchart.orientation = LinearLayoutManager.HORIZONTAL
-        rvBarchart = view.findViewById(R.id.rv_barchart)
-
-        val adapterBarchart = BarchartAdapter(ArrayBar, activity)
-        rvBarchart.setHasFixedSize(true)
-        rvBarchart.layoutManager = lmBarchart
-        rvBarchart.adapter = adapterBarchart
-
+        fetchMood()
+        fetchDepresi()
+        fetchStress()
+        fetchAnxiety()
+        initBarChartRv(view)
         //Recycle recomendation
         val lmRecommendation = LinearLayoutManager(activity)
         lmRecommendation.orientation = LinearLayoutManager.VERTICAL
@@ -160,31 +80,129 @@ class HomeFragment : Fragment() {
 
     }
 
-    val ArrayBar : ArrayList<ModelBarchart>get() {
-        val arraybar = ArrayList<ModelBarchart>()
 
-        val moodBarchart = ModelBarchart()
-        moodBarchart.title = "Mood"
-        moodBarchart.dataChart = data
-        arraybar.add(moodBarchart)
-        Log.d(TAG, "aku mendapatkan data mood: ${data} ")
 
-        val depresiBarchart = ModelBarchart()
-        depresiBarchart.title = "Depresi"
-        depresiBarchart.dataChart = dataDepresi
-        Log.d(TAG, "aku mendapatkan data depresi: ${dataDepresi} ")
+    // pecah pengambilan data menjadi fungsi spesifik tertentu,
+    // teknik ini mempermudah untuk membuat action reload, retry, dll [contoh: reloadBtn->onClick->call_fetchMood()]
+    fun fetchMood(){
+        val refMood = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("mood").document("value").collection(current)
 
-        val stressBarchart = ModelBarchart()
-        stressBarchart.title = "Stress"
-        stressBarchart.dataChart = dataStress
-        Log.d(TAG, "aku mendapatkan data stress: ${dataStress} ")
+        // get data mood
+        refMood.get().addOnSuccessListener {documents ->
+            for (document in documents) {
+                var tgl = 1
+                var value = document.get("value").toString()
+                Log.d(TAG, "mood value ${document.get("value")}")
+                var score = if (value == "positif") 2F else 1F
 
-        val anxietyBarchart = ModelBarchart()
-        anxietyBarchart.title = "Anxiety"
-        anxietyBarchart.dataChart = dataAnxiety
-        Log.d(TAG, "aku mendapatkan data anxiety: ${dataAnxiety} ")
+                moodData.add(Pair(tgl.toString(), score))
+                tgl++
+            }
+            if (moodData.size == 1) {
+                moodData.add(Pair("", 0F))
+            }
+            updateBarChart()
+            Log.d(TAG, "fetchMood: data size: " + moodData.size)
+        }.addOnFailureListener {exception ->
+            Log.d(TAG, "fetchMood: fetch failed", exception)
 
-        return arraybar
+        }
+    }
+    fun fetchDepresi(){
+        val refDepresi = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("Depresi").document("value").collection(current)
+
+        // get data depresi
+        refDepresi.get().addOnSuccessListener { documents ->
+            for (document in documents) {
+                var week = 1
+                var value = document.get("value").toString().toInt()
+                Log.d(TAG, "depresi value ${document.get("value")}")
+                var score = value / 2
+                depresiData.add(Pair(week.toString(), score.toFloat()))
+                week++
+            }
+            if (depresiData.size == 1) {
+                depresiData.add(Pair("", 0F))
+            }
+            updateBarChart()
+            Log.d(TAG, "fetchDepresi: data size: " + depresiData.size)
+            return@addOnSuccessListener
+        } .addOnFailureListener {exception->
+            Log.d(TAG, "fetchDepresi: fetch failed", exception)
+
+        }
+    }
+    fun fetchStress(){
+        val refStress = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("Stress").document("value").collection(current)
+
+        //get data stress
+        refStress.get().addOnSuccessListener { documents ->
+            for (document in documents) {
+                var week = 1
+                var value = document.get("value").toString().toInt()
+                Log.d(TAG, "stress value ${document.get("value")}")
+                var score = value / 2
+                stressData.add(Pair(week.toString(), score.toFloat()))
+                week++
+            }
+            if (stressData.size == 1) {
+                stressData.add(Pair("", 0F))
+            }
+            updateBarChart()
+            Log.d(TAG, "fetchStress: data size: " + stressData.size)
+
+        } .addOnFailureListener {exception->
+            Log.d(TAG, "fetchStress: fetch failed", exception)
+        }
+    }
+    fun fetchAnxiety(){
+        val refAnxiety = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("Anxiety").document("value").collection(current)
+
+        //get data Anxiety
+        refAnxiety.get().addOnSuccessListener { documents ->
+            for (document in documents) {
+                var week = 1
+                var value = document.get("value").toString().toInt()
+                Log.d(TAG, "anxiety value ${document.get("value")}")
+                var score = value / 2
+                anxietyData.add(Pair(week.toString(), score.toFloat()))
+                week++
+            }
+            if (anxietyData.size == 1) {
+                anxietyData.add(Pair("", 0F))
+            }
+            updateBarChart()
+            Log.d(TAG, "fetchAnxiety: data size: " + anxietyData.size)
+
+        } .addOnFailureListener {exception->
+            Log.d(TAG, "fetchAnxiety: fetch failed", exception)
+        }
+    }
+    // alternatif: view ga bisa diakses langsung dari function ini,
+    // jadi pass view ke showBarChart atau pindahkan semua kode showBarChart di akhir
+    // addOnSuccessListener [terlalu repetisi]
+    fun initBarChartRv(view: View){
+        //Recycle Barchart
+        val lmBarchart = LinearLayoutManager(activity)
+        lmBarchart.orientation = LinearLayoutManager.HORIZONTAL
+        val rvBarchart: RecyclerView = view.findViewById(R.id.rv_barchart)
+        val chartData = arrayListOf<ModelBarchart>(
+            ModelBarchart("Mood", moodData),
+            ModelBarchart("Depresi", depresiData),
+            ModelBarchart("Stress", stressData),
+            ModelBarchart("Anxiety", anxietyData)
+        )
+        adapterBarchart = BarchartAdapter(chartData, requireActivity())
+        rvBarchart.setHasFixedSize(true)
+        rvBarchart.layoutManager = lmBarchart
+        rvBarchart.adapter = adapterBarchart
+    }
+
+    fun updateBarChart(){
+        // si bambang di bawah ini untuk memberitahu adapter bahwa telah
+        // terjadi perubahan data. ini kurang efisien, tapi yg paling joss dan simple
+        // btw function wrapper ini supaya mudah dibaca aja ("oh ternyata mengupdate tampilan bar chart")
+        adapterBarchart?.notifyDataSetChanged() // check if null ala kotlin
     }
 
     val ArrayRecommendation :ArrayList<ModelRecommendation>get() {
@@ -229,18 +247,7 @@ class HomeFragment : Fragment() {
             HomeFragment().apply {
                 arguments = Bundle().apply {}
             }
-
-//            private val barSet = listOf(
-//                "JAN" to 4F,
-//                "FEB" to 7F,
-//                "MAR" to 2F,
-//                "MAY" to 2.3F,
-//                "APR" to 5F,
-//                "JUN" to 4F
-//            )
-
-            private const val animationDuration = 1000L
-
+        private const val animationDuration = 1000L
     }
 
 }
