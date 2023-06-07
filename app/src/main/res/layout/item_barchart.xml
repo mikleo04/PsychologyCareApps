@@ -10,16 +10,16 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:elevation="8dp">
 
         <TextView
             android:id="@+id/tv_tittleBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:textSize="8sp"
-            android:fontFamily="@font/poppins_medium"
+            android:layout_marginHorizontal="7dp"
+            android:textSize="12sp"
+            android:fontFamily="@font/poppins_bold"
             android:textColor="@color/black"
             android:text="Mood"/>
 
@@ -28,13 +28,15 @@
     <com.db.williamchart.view.BarChartView
         android:id="@+id/barChart"
         android:layout_width="380dp"
-        android:layout_height="165dp"
+        android:layout_height="142dp"
+        android:paddingHorizontal="10dp"
         app:chart_axis="xy"
         app:chart_barsColor="@color/black"
         app:chart_barsRadius="4dp"
         app:chart_labelsColor="@color/black"
         app:chart_labelsSize="10sp"
         app:chart_spacing="15dp"
+        android:paddingBottom="5dp"
         />
 
 </LinearLayout>

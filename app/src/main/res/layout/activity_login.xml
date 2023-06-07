@@ -14,7 +14,7 @@
         android:layout_marginTop="50dp"
         android:fontFamily="@font/poppins_bold"
         android:textColor="@color/black"
-        android:text="Welcome To Psychology Care"
+        android:text="Welcome to Psychology Care"
         android:textSize="20sp"/>
 
     <ImageView
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_gravity="right"
-            android:textColor="@color/green_light"
+            android:textColor="@color/green_dark"
             android:fontFamily="@font/poppins_medium"
             android:textSize="12sp"
             android:text="Forgot password ?" />
@@ -129,7 +129,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:gravity="center"
-        android:backgroundTint="@color/gray"
+        android:backgroundTint="@color/gray_light"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:textColor="@color/black"
@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:text="register"
             android:fontFamily="@font/poppins_medium"
-            android:textColor="@color/green_light"
+            android:textColor="@color/green_dark"
             android:layout_marginStart="3dp"/>
 
     </LinearLayout>

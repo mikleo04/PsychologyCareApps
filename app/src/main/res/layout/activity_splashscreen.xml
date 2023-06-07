@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Psychologi Care"
+            android:text="Psychology Care Apps"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
-        android:text="Versin 1.0"
+        android:text="Versin 1.0.0"
         android:layout_marginBottom="10dp"
         android:textColor="@color/white"
         android:textSize="14sp"

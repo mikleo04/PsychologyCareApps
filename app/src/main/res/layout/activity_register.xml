@@ -14,7 +14,7 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/poppins_bold"
         android:textColor="@color/black"
-        android:text="Register"
+        android:text="Buat Akun Kamu"
         android:textSize="20sp"/>
 
     <ImageView
@@ -174,9 +174,10 @@
 
     <Button
         android:id="@+id/btn_register"
-        android:layout_width="370dp"
+        android:layout_width="match_parent"
         android:layout_height="57dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="20dp"
         android:text="Register"
         android:textColor="@color/white"
         android:backgroundTint="@color/green_dark"
@@ -201,7 +202,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="login"
-            android:textColor="@color/green_light"
+            android:textColor="@color/green_dark"
             android:layout_marginStart="3dp"/>
 
     </LinearLayout>
