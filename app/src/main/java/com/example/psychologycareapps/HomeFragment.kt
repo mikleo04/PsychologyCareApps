@@ -1,6 +1,7 @@
 package com.example.psychologycareapps
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.service.controls.ControlsProviderService.TAG
 import android.util.Log
@@ -19,6 +20,13 @@ import com.example.psychologycareapps.model.ModelRecommendation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_home.*
+import lecho.lib.hellocharts.model.Axis
+import lecho.lib.hellocharts.model.AxisValue
+import lecho.lib.hellocharts.model.Column
+import lecho.lib.hellocharts.model.ColumnChartData
+import lecho.lib.hellocharts.model.SubcolumnValue
+import lecho.lib.hellocharts.util.ChartUtils
+import lecho.lib.hellocharts.view.ColumnChartView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,11 +36,11 @@ class HomeFragment : Fragment() {
     lateinit var rvRecommendation : RecyclerView
     var adapterBarchart: BarchartAdapter? = null
     val uid = FirebaseAuth.getInstance().currentUser?.uid
-    val current = SimpleDateFormat("MMMM-yyyy").format(Calendar.getInstance().time)
-    val moodData = arrayListOf<Pair<String, Float>>()
-    val depresiData = arrayListOf<Pair<String, Float>>()
-    val stressData = arrayListOf<Pair<String, Float>>()
-    val anxietyData = arrayListOf<Pair<String, Float>>()
+    val current = SimpleDateFormat("MM-yyyy").format(Calendar.getInstance().time)
+    val moodData = arrayListOf<Float>()
+    val depresiData = arrayListOf<Float>()
+    val stressData = arrayListOf<Float>()
+    val anxietyData = arrayListOf<Float>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +68,6 @@ class HomeFragment : Fragment() {
         fetchDepresi()
         fetchStress()
         fetchAnxiety()
-        initBarchartRv(view)
 
         //Recycle recomendation
         val lmRecommendation = LinearLayoutManager(activity)
@@ -73,27 +80,50 @@ class HomeFragment : Fragment() {
         rvRecommendation.adapter = adapterRecommendation
 
     }
+    fun initBarChart(dx: ArrayList<Float>, chart: ColumnChartView, title: String){
+        val columns = arrayListOf<Column>()
+        for (i in 0 until dx.size){
+            val values = ArrayList<SubcolumnValue>()
+//            values.add(SubcolumnValue(dx[i], ChartUtils.COLOR_RED))
+            values.add(SubcolumnValue(dx[i], Color.BLACK))
+            val c = Column(values)
+            c.setHasLabels(true)
+            columns.add(c)
+        }
 
+        val valX = arrayListOf<AxisValue>()
+
+        for (i in 0 until dx.size){
+            val label = AxisValue(i.toFloat())
+            label.setLabel("Week ${i+1}")
+            valX.add(label)
+        }
+
+        val axisY = Axis()
+        val axisX = Axis()
+        axisY.name = "Score"
+        axisX.name = title
+        axisY.textColor = Color.BLACK
+        axisX.textColor = Color.BLACK
+        axisX.values = valX
+
+        val colData = ColumnChartData(columns)
+        colData.axisYLeft = axisY
+        colData.axisXBottom = axisX
+        chart?.setColumnChartData(colData)
+    }
     fun fetchMood() {
         val refMood = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("mood").document("value").collection(current)
 
         refMood.get().addOnSuccessListener {documents ->
-            var tgl = 1
             for (document in documents) {
                 var value = document.get("value").toString()
-                Log.d(TAG, "mood value ${document.get("value")}")
-                var score = if (value == "positif") 10F else 5F
-                var x = String.format("%.1f", score)
-                moodData.add(Pair(tgl.toString(), x.toFloat()))
-                tgl++
+                val score = if (value == "positif") 2F else 1F
+                moodData.add(score)
             }
-            if (moodData.size == 1) {
-                moodData.add(Pair("", 0F))
-            }
-            updateBarChart()
+            initBarChart(moodData, requireActivity().findViewById(R.id.chartMood), "Mood")
             Log.d(TAG, "fetchMood: data size: " + moodData.size)
         }.addOnFailureListener {exception ->
-            Log.d(TAG, "get failed data mood", exception)
             Log.d(TAG, "fetchMood: fetch failed", exception)
         }
     }
@@ -102,21 +132,13 @@ class HomeFragment : Fragment() {
         val refDepresi = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("Depresi").document("value").collection(current)
 
         refDepresi.get().addOnSuccessListener { documents ->
-            var week = 1
             for (document in documents) {
-                var value = document.get("value").toString().toInt()
-                Log.d(TAG, "depresi value ${document.get("value")}")
-                var score = (value/2).toFloat()
-                var x = String.format("%.1f", score)
-                var y = x.toFloat()
-                depresiData.add(Pair(week.toString(), y))
-                Log.d(TAG, "minggu: " + week)
-                week++
+                var value = document.get("value").toString().toFloat()
+//                Log.d(TAG, "depresi value ${document.get("value")}")
+                var score = (value/20 * 100)
+                depresiData.add(score)
             }
-            if (depresiData.size == 1) {
-                depresiData.add(Pair("", 0F))
-            }
-            updateBarChart()
+            initBarChart(depresiData, requireActivity().findViewById(R.id.chartDepresi), "Depresi")
             Log.d(TAG, "fetchDepresi: data size: " + depresiData.size)
             return@addOnSuccessListener
         }.addOnFailureListener {exception ->
@@ -129,20 +151,13 @@ class HomeFragment : Fragment() {
         val refStress = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("Stress").document("value").collection(current)
 
         refStress.get().addOnSuccessListener {documents ->
-            var week = 1
             for (document in documents) {
-                var value = document.get("value").toString().toInt()
-                Log.d(TAG, "stress value ${document.get("value")}")
-                var score = (value / 2 ).toFloat()
-                var x = String.format("%.1f", score)
-                var y = x.toFloat()
-                stressData.add(Pair(week.toString(), y))
-                week++
+                var value = document.get("value").toString().toFloat()
+                var score = (value / 20 * 100 )
+                stressData.add(score)
+
             }
-            if (stressData.size == 1) {
-                stressData.add(Pair("", 0F))
-            }
-            updateBarChart()
+            initBarChart(stressData, requireActivity().findViewById(R.id.chartStress), "Stress")
             Log.d(TAG, "fetchStress: data size: " + stressData.size)
         }.addOnFailureListener {exception ->
             Log.d(TAG, "fetchStress: fetch failed", exception)
@@ -153,51 +168,18 @@ class HomeFragment : Fragment() {
         val refAnxiety = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("Anxiety").document("value").collection(current)
 
         refAnxiety.get().addOnSuccessListener {documents ->
-            var week = 1
             for (document in documents) {
-                var value = document.get("value").toString().toInt()
-                Log.d(TAG, "anxiety value ${document.get("value")}")
-                var score = (value / 2).toFloat()
-                var x = String.format("%.1f", score)
-                var y = x.toFloat()
-                anxietyData.add(Pair(week.toString(), y))
-                week++
+                var value = document.get("value").toString().toFloat()
+                var score = (value / 20 * 100)
+                anxietyData.add(score)
             }
-            if (anxietyData.size == 1) {
-                anxietyData.add(Pair("", 0F))
-            }
-            updateBarChart()
+            initBarChart(anxietyData, requireActivity().findViewById(R.id.chartAnxiety), "Anxiety")
             Log.d(TAG, "fetchAnxiety: data size: " + anxietyData.size)
         }.addOnFailureListener {exception ->
             Log.d(TAG, "fetchAnxiety: fetch failed", exception)
         }
     }
 
-    fun initBarchartRv(view: View) {
-        val lmBarchart = LinearLayoutManager(activity)
-        lmBarchart.orientation = LinearLayoutManager.HORIZONTAL
-        val rvBarchart: RecyclerView = view.findViewById(R.id.rv_barchart)
-        val chartData = arrayListOf<ModelBarchart>(
-            ModelBarchart("Mood", moodData),
-            ModelBarchart("Depresi", depresiData),
-            ModelBarchart("Stress", stressData),
-            ModelBarchart("Anxiety", anxietyData)
-        )
-
-        /*Snap*/
-        val snapHelper: SnapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(rvBarchart)
-        /*End of Snap*/
-
-        adapterBarchart = BarchartAdapter(chartData, requireActivity())
-        rvBarchart.setHasFixedSize(true)
-        rvBarchart.layoutManager = lmBarchart
-        rvBarchart.adapter = adapterBarchart
-    }
-
-    fun updateBarChart() {
-        adapterBarchart?.notifyDataSetChanged()
-    }
 
     val ArrayRecommendation :ArrayList<ModelRecommendation>get() {
         val arrayrecommendation = ArrayList<ModelRecommendation>()
@@ -241,18 +223,6 @@ class HomeFragment : Fragment() {
             HomeFragment().apply {
                 arguments = Bundle().apply {}
             }
-
-//            private val barSet = listOf(
-//                "JAN" to 4F,
-//                "FEB" to 7F,
-//                "MAR" to 2F,
-//                "MAY" to 2.3F,
-//                "APR" to 5F,
-//                "JUN" to 4F
-//            )
-
-        private const val animationDuration = 1000L
-
     }
 
 }
