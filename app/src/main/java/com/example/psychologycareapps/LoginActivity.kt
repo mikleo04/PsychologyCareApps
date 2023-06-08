@@ -30,9 +30,16 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        //register button
         binding.tvRegisterNow.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+        }
+
+        //forgot password button
+        binding.tvForgotpassword.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            startActivity((intent))
         }
 
         // sign in with google account
