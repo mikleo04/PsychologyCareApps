@@ -96,9 +96,12 @@ dependencies {
 
     //load imagae from url
     implementation 'com.squareup.picasso:picasso:2.71828'
-    ///chart
-    implementation 'com.diogobernardino:williamchart:3.10.1'
 
+    ///chart
+//  implementation 'com.diogobernardino:williamchart:3.10.1'
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+
+    //animation
     implementation 'com.airbnb.android:lottie:3.4.0'
 
 
