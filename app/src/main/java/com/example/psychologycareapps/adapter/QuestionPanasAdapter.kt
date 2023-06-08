@@ -31,7 +31,6 @@ class QuestionPanasAdapter (var data : ArrayList<ModelQuestionPanas>, var contex
 
         holder.question.text = data[position].question
         holder.groupAnswer.setOnCheckedChangeListener{ group, checkedId ->
-
             val ans = context?.findViewById<RadioButton>(checkedId)
 
             data.forEach {
@@ -44,8 +43,17 @@ class QuestionPanasAdapter (var data : ArrayList<ModelQuestionPanas>, var contex
                     else -> 0
                 }
             }
-
         }
+
+        val check = when(data[position].answer){
+            1 -> R.id.rb_htp
+            2 -> R.id.rb_jr
+            3 -> R.id.rb_kd
+            4 -> R.id.rb_sr
+            5 -> R.id.rb_hsl
+            else -> -1
+        }
+        holder.groupAnswer.check(check)
     }
 
     fun getSelectedItemData() : ArrayList<ModelQuestionPanas> {

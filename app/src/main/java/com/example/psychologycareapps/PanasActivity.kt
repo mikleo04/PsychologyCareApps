@@ -32,6 +32,7 @@ class PanasActivity : AppCompatActivity() {
         val adapterQuestion = QuestionPanasAdapter(ArrayQuestion, this)
         rvQuestion.setHasFixedSize(true)
         rvQuestion.layoutManager = lmQuestion
+
         rvQuestion.adapter = adapterQuestion
 
         binding.btnSubmit.setOnClickListener {
@@ -51,7 +52,7 @@ class PanasActivity : AppCompatActivity() {
             //limit submit jawaban dengan menghitung jumlah data yang sudah ada di firebase
             val uid = FirebaseAuth.getInstance().currentUser?.uid
             val time = Calendar.getInstance().time
-            val formatter = SimpleDateFormat("MMMM-yyyy")
+            val formatter = SimpleDateFormat("MM-yyyy")
             val current = formatter.format(time)
             var counter = 0
             val ref = FirebaseFirestore.getInstance().collection("Panas").document(uid!!).collection("mood").document("value").collection(current)
