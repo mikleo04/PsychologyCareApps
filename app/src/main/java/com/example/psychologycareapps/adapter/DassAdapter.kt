@@ -35,16 +35,24 @@ class DassAdapter(var data : ArrayList<ModelDass>, var context: Activity?) : Rec
 
             data.forEach {
                 data[position].answer = when(ans?.text) {
-                    "Tidak relevan dengan saya" -> 0
-                    "Tidak terlalu relevan dengan saya" -> 1
-                    "Kadang-kadang relevan dengan saya" -> 2
-                    "Lumayan relevan dengan saya" -> 3
-                    "Sangat relevan dengan saya" -> 4
+                    "Tidak Pernah" -> 0
+                    "kadang-kadang" -> 1
+                    "Sering" -> 2
+                    "Hampir Selalu" -> 3
                     else -> {
                         Log.d(TAG, "Jawaban tidak diketahui")}
                 }
             }
         }
+
+        val check = when (data[position].answer) {
+            0 -> R.id.rb_tpdaas
+            1 -> R.id.rb_kddass
+            2 -> R.id.rb_srdass
+            3 -> R.id.rb_hsdass
+            else -> -1
+        }
+        holder.groupAnswer.check(check)
     }
 
     fun getSelectedItemData() : ArrayList<ModelDass> {
@@ -52,7 +60,7 @@ class DassAdapter(var data : ArrayList<ModelDass>, var context: Activity?) : Rec
     }
 
     companion object {
-        private const val TAG = "QuestionPanasAdapter"
+        private const val TAG = "DassAdapter"
     }
 
 }

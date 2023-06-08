@@ -30,40 +30,33 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_statemant">
 
             <RadioButton
-                android:id="@+id/rb_tr"
+                android:id="@+id/rb_tpdaas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="12sp"
-                android:text="Tidak relevan dengan saya"/>
+                android:text="Tidak Pernah"/>
             <RadioButton
-                android:id="@+id/rb_trr"
+                android:id="@+id/rb_kddass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="12sp"
-                android:text="Tidak terlalu relevan dengan saya"/>
+                android:text="kadang-kadang"/>
             <RadioButton
-                android:id="@+id/rb_kkr"
+                android:id="@+id/rb_srdass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="12sp"
-                android:text="Kadang-kadang relevan dengan saya"/>
+                android:text="Sering"/>
             <RadioButton
-                android:id="@+id/rb_lr"
+                android:id="@+id/rb_hsdass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="12sp"
-                android:text="Lumayan relevan dengan saya"/>
-            <RadioButton
-                android:id="@+id/rb_sr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:textSize="12sp"
-                android:text="Sangat relevan dengan saya"/>
+                android:text="Hampir Selalu"/>
 
         </RadioGroup>
 

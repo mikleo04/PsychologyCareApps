@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.log
 
 class DassActivity : AppCompatActivity() {
 
@@ -45,6 +46,8 @@ class DassActivity : AppCompatActivity() {
                     Toast.makeText(this, "Mohon isi semua pertanyaan", Toast.LENGTH_SHORT).show()
                     allowCalculate = false
                     break
+                } else {
+                    allowCalculate = true
                 }
             }
 
@@ -60,17 +63,20 @@ class DassActivity : AppCompatActivity() {
                     counter = documents.count()
 
                     if (counter >= 4) {
-                        allowCalculate = true
+                        allowCalculate = false
                         Toast.makeText(applicationContext, "Anda sudah mencapai batas pengisian", Toast.LENGTH_SHORT).show()
+                        finish()
                     } else {
-                        calculate(data, uid, current)
+                        allowCalculate = true
                     }
                 }
                 .addOnFailureListener {exception ->
                     Log.d(TAG, "get failed with", exception)
                 }
-
-            finish()
+            
+            if (allowCalculate){
+                calculate(data, uid, current)
+            }
 
         }
 
@@ -97,9 +103,9 @@ class DassActivity : AppCompatActivity() {
         Log.d(TAG, "calculate: anxiety: " + anxiety)
 
         val ref = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid)
-        var convertDepresi : Float = (depresi / 20).toDouble().toFloat()
-        var convertStress : Float = (stress / 20).toDouble().toFloat()
-        var convertAnxiety : Float = (anxiety / 20).toDouble().toFloat()
+//        var convertDepresi : Float = (depresi / 20).toDouble().toFloat()
+//        var convertStress : Float = (stress / 20).toDouble().toFloat()
+//        var convertAnxiety : Float = (anxiety / 20).toDouble().toFloat()
 
         var saveDepresi = mapOf<String, Int>("value" to depresi)
         var savestress = mapOf<String, Int>("value" to stress)
@@ -112,7 +118,7 @@ class DassActivity : AppCompatActivity() {
                 if (it.isSuccessful) {
                     Toast.makeText(applicationContext, "Data ada berhasil disimpan", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(applicationContext, "Data anda gagal disimpan coba lagi beberasaat", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "calculate: Data depresi gagal disimpan")
                 }
             }
 
@@ -120,9 +126,9 @@ class DassActivity : AppCompatActivity() {
         ref.collection("Stress").document("value").collection(current).document()
             .set(savestress).addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Toast.makeText(applicationContext, "Data ada berhasil disimpan", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "calculate: Data stress berhasil disimpan")
                 } else {
-                    Toast.makeText(applicationContext, "Data anda gagal disimpan coba lagi beberasaat", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "calculate: Data stess gagal disimpan")
                 }
             }
 
@@ -136,86 +142,126 @@ class DassActivity : AppCompatActivity() {
                 }
             }
 
+        finish()
+
     }
 
     val ArrayStatement : ArrayList<ModelDass>get() {
         val arraystatement = ArrayList<ModelDass>()
 
+        val typeDepresi = "depresi"
+        val typeAnxiety = "anxiety"
+        val typeStress = "stress"
+
         val statement1 = ModelDass()
         statement1.id = "1"
-        statement1.type = "depresi"
-        statement1.statement = "1. Saya merasa sedih dan murung."
+        statement1.type = typeStress
+        statement1.statement = "1. Saya marah tentang hal-hal kecil.."
         arraystatement.add(statement1)
         val statement2 = ModelDass()
         statement2.id = "2"
-        statement2.type = "depresi"
-        statement2.statement = "2. Saya merasa tidak menarik atau kehilangan minat pada hal-hal yang biasanya saya nikmati."
+        statement2.type = typeAnxiety
+        statement2.statement = "2. Saya merasa pusing seperti mau pingsan."
         arraystatement.add(statement2)
         val statement3 = ModelDass()
         statement3.id = "3"
-        statement3.type = "depresi"
-        statement3.statement = "3. Saya merasa tidak berharga atau tidak berguna."
+        statement3.type = typeDepresi
+        statement3.statement = "3. Saya tidak menikmati apapun."
         arraystatement.add(statement3)
         val statement4 = ModelDass()
         statement4.id = "4"
-        statement4.type = "depresi"
-        statement4.statement = "4. Saya merasa tidak bersemangat atau tanpa harapan."
+        statement4.type = typeAnxiety
+        statement4.statement = "4. Saya mengalami kesulitan bernapas (mis. pernapasan cepat), meskipun saya tidak berolahraga dan tidak sakit."
         arraystatement.add(statement4)
+
         val statement5 = ModelDass()
         statement5.id = "5"
-        statement5.type = "depresi"
-        statement5.statement = "5. Saya merasa cemas atau tertekan."
+        statement5.type = typeDepresi
+        statement5.statement = "5. Aku benci hidupku."
         arraystatement.add(statement5)
         val statement6 = ModelDass()
         statement6.id = "6"
-        statement6.type = "anxiety"
-        statement6.statement = "6. Saya merasa sedih dan murung."
+        statement6.type = typeStress
+        statement6.statement = "6. Saya mendapati diri saya bereaksi berlebihan terhadap situasi."
         arraystatement.add(statement6)
         val statement7 = ModelDass()
         statement7.id = "7"
-        statement7.type = "anxiety"
-        statement7.statement = "7. Saya merasa tidak menarik atau kehilangan minat pada hal-hal yang biasanya saya nikmati."
+        statement7.type = typeAnxiety
+        statement7.statement = "7. Tanganku terasa gemetar."
         arraystatement.add(statement7)
         val statement8 = ModelDass()
         statement8.id = "8"
-        statement8.type = "anxiety"
-        statement8.statement = "8. Saya merasa tidak berharga atau tidak berguna."
+        statement8.type = typeStress
+        statement8.statement = "8. Saya menekankan tentang banyak hal."
         arraystatement.add(statement8)
         val statement9 = ModelDass()
         statement9.id = "9"
-        statement9.type = "anxiety"
-        statement9.statement = "9. Saya merasa tidak bersemangat atau tanpa harapan."
+        statement9.type = typeAnxiety
+        statement9.statement = "9. Saya merasa ketakutan."
         arraystatement.add(statement9)
+
         val statement10 = ModelDass()
         statement10.id = "10"
-        statement10.type = "anxiety"
-        statement10.statement = "10. Saya merasa cemas atau tertekan."
+        statement10.type = typeDepresi
+        statement10.statement = "10. Tidak ada hal baik yang bisa saya nantikan."
         arraystatement.add(statement10)
         val statement11 = ModelDass()
         statement11.id = "11"
-        statement11.type = "stress"
-        statement11.statement = "11. Saya merasa sedih dan murung."
+        statement11.type = typeStress
+        statement11.statement = "11. Saya mudah tersinggung."
         arraystatement.add(statement11)
         val statement12 = ModelDass()
         statement12.id = "12"
-        statement12.type = "stress"
-        statement12.statement = "12. Saya merasa tidak menarik atau kehilangan minat pada hal-hal yang biasanya saya nikmati."
+        statement12.type = typeStress
+        statement12.statement = "12. Saya merasa sulit untuk bersantai."
         arraystatement.add(statement12)
         val statement13 = ModelDass()
         statement13.id = "13"
-        statement13.type = "stress"
-        statement13.statement = "13. Saya merasa tidak berharga atau tidak berguna."
+        statement13.type = typeDepresi
+        statement13.statement = "13. Saya tidak bisa berhenti merasa sedih."
         arraystatement.add(statement13)
         val statement14 = ModelDass()
         statement14.id = "14"
-        statement14.type = "stress"
-        statement14.statement = "14. Saya merasa tidak bersemangat atau tanpa harapan."
+        statement14.type = typeStress
+        statement14.statement = "14. Saya kesal ketika orang mengganggu saya."
         arraystatement.add(statement14)
+
         val statement15 = ModelDass()
         statement15.id = "15"
-        statement15.type = "stress"
-        statement15.statement = "15. Saya merasa cemas atau tertekan."
+        statement15.type = typeAnxiety
+        statement15.statement = "15. Saya merasa seperti akan panik."
         arraystatement.add(statement15)
+        val statement16 = ModelDass()
+        statement16.id = "16"
+        statement16.type = typeDepresi
+        statement16.statement = "16. Aku membenci diriku sendiri."
+        arraystatement.add(statement16)
+        val statement17 = ModelDass()
+        statement17.id = "17"
+        statement17.type = typeDepresi
+        statement17.statement = "17. Saya merasa seperti saya tidak baik."
+        arraystatement.add(statement17)
+        val statement18 = ModelDass()
+        statement18.id = "18"
+        statement18.type = typeStress
+        statement18.statement = "18. Saya mudah kesal."
+        arraystatement.add(statement18)
+        val statement19 = ModelDass()
+        statement19.id = "19"
+        statement19.type = typeAnxiety
+        statement19.statement = "19. Saya bisa merasakan jantung saya berdetak kencang, meskipun saya tidak melakukan olahraga berat."
+        arraystatement.add(statement19)
+
+        val statement20 = ModelDass()
+        statement20.id = "20"
+        statement20.type = typeAnxiety
+        statement20.statement = "20. Saya merasa takut tanpa alasan yang jelas."
+        arraystatement.add(statement20)
+        val statement21 = ModelDass()
+        statement21.id = "21"
+        statement21.type = typeDepresi
+        statement21.statement = "21. Saya merasa hidup itu mengerikan."
+        arraystatement.add(statement21)
 
         return arraystatement
     }
