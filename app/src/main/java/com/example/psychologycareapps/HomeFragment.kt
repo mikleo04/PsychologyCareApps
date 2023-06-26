@@ -9,13 +9,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.psychologycareapps.adapter.RecommendationAdapter
 import com.example.psychologycareapps.model.ModelRecommendation
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import lecho.lib.hellocharts.model.Axis
 import lecho.lib.hellocharts.model.AxisValue
 import lecho.lib.hellocharts.model.Column
@@ -35,6 +38,7 @@ class HomeFragment : Fragment() {
     val depresiData = arrayListOf<Float>()
     val stressData = arrayListOf<Float>()
     val anxietyData = arrayListOf<Float>()
+    private lateinit var database : DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +51,20 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // display username in greetings
+        database = FirebaseDatabase.getInstance().getReference("users").child(uid!!)
+        database.addListenerForSingleValueEvent(object  : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", error.toException())
+            }
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                val username = snapshot.child("username").value
+                tv_username.text = username.toString()
+                Log.d("Data name", username.toString())
+            }
+        })
 
         btn_panastest.setOnClickListener {
             val intent = Intent(this@HomeFragment.requireContext(), PanasActivity::class.java)
@@ -131,7 +149,7 @@ class HomeFragment : Fragment() {
 
             for (document in documents) {
                 var value = document.get("value").toString().toFloat()
-                var score = (value/20 * 100)
+                var score = (value/21 * 100)
                 depresiData.add(score)
             }
             initBarchart(depresiData, requireActivity().findViewById(R.id.cc_depresi), "Minggu ke")
@@ -150,7 +168,7 @@ class HomeFragment : Fragment() {
             var week = 1
             for (document in documents) {
                 var value = document.get("value").toString().toFloat()
-                var score = (value / 20 * 100 )
+                var score = (value / 21 * 100 )
                 stressData.add(score)
             }
             initBarchart(stressData, requireActivity().findViewById(R.id.cc_stress), "Minggu ke")
@@ -167,7 +185,7 @@ class HomeFragment : Fragment() {
         refAnxiety.get().addOnSuccessListener {documents ->
             for (document in documents) {
                 var value = document.get("value").toString().toFloat()
-                var score = (value/20 *100).toFloat()
+                var score = (value/21 *100).toFloat()
                 anxietyData.add(score)
             }
             initBarchart(anxietyData, requireActivity().findViewById(R.id.cc_anxiety), "Minggu ke")

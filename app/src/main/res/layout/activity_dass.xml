@@ -40,7 +40,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
-                android:text="Isi lah pernyataan dibawah ini sesuai dengan kondisi yang sedang kamu rasakan"
+                android:text="Isi lah pernyataan dibawah ini sesuai dengan kondisi yang sedang kamu rasakan dalam waktu satu minggu ini"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"

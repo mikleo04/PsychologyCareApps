@@ -38,7 +38,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Isi lah pernyataan dibawah ini sesuai dengan kondisi yang sedang kamu rasakan"
+                android:text="Isi lah pernyataan dibawah ini sesuai dengan kondisi yang sedang kamu rasakan dalam seharian ini"
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:textSize="12sp"
@@ -46,11 +46,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hari ini saya merasa ..."
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="12sp"
+                android:layout_marginTop="10dp"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+
                 tools:listitem="@layout/item_test"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 

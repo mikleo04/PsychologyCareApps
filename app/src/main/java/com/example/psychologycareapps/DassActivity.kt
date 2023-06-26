@@ -1,5 +1,6 @@
 package com.example.psychologycareapps
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -42,12 +43,10 @@ class DassActivity : AppCompatActivity() {
             //validation apakah pernyataan sudah diisi semua?
             for (i in 1..data.size-1) {
                 Log.d(DassActivity.TAG, "onCreate: q: " + data[i].statement + " a: " + data[i].answer)
-                if (data[i].answer == 0) {
+                if (data[i].answer == -1) {
                     Toast.makeText(this, "Mohon isi semua pertanyaan", Toast.LENGTH_SHORT).show()
                     allowCalculate = false
                     break
-                } else {
-                    allowCalculate = true
                 }
             }
 
@@ -56,24 +55,24 @@ class DassActivity : AppCompatActivity() {
             val time = Calendar.getInstance().time
             val formatter = SimpleDateFormat("MM-yyyy")
             val current = formatter.format(time)
-            var counter = 0
-            val ref = FirebaseFirestore.getInstance().collection("Test Psikologi").document(uid!!)
+            val ref = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!)
             ref.collection("Depresi").document("value").collection(current).get()
                 .addOnSuccessListener {documents ->
-                    counter = documents.count()
+                    val counter = documents.count()
+                    Log.d(TAG, "toatal item: ${counter}")
 
-                    if (counter >= 4) {
+                    if (counter > 4) {
                         allowCalculate = false
                         Toast.makeText(applicationContext, "Anda sudah mencapai batas pengisian", Toast.LENGTH_SHORT).show()
                         finish()
-                    } else {
-                        allowCalculate = true
                     }
                 }
                 .addOnFailureListener {exception ->
                     Log.d(TAG, "get failed with", exception)
                 }
-            
+
+            Log.d(TAG, "allow calculate: ${allowCalculate}")
+
             if (allowCalculate){
                 calculate(data, uid, current)
             }
@@ -87,6 +86,7 @@ class DassActivity : AppCompatActivity() {
         var depresi = 0
         var stress = 0
         var anxiety = 0
+        var time = Calendar.getInstance().time
 
         //total
         data.forEach {
@@ -113,7 +113,7 @@ class DassActivity : AppCompatActivity() {
 
         //upload firebase
         //save data depresi
-        ref.collection("Depresi").document("value").collection(current).document()
+        ref.collection("Depresi").document("value").collection(current).document(time.toString())
             .set(saveDepresi).addOnCompleteListener {
                 if (it.isSuccessful) {
                     Toast.makeText(applicationContext, "Data ada berhasil disimpan", Toast.LENGTH_SHORT).show()
@@ -123,7 +123,7 @@ class DassActivity : AppCompatActivity() {
             }
 
         //save data stress
-        ref.collection("Stress").document("value").collection(current).document()
+        ref.collection("Stress").document("value").collection(current).document(time.toString())
             .set(savestress).addOnCompleteListener {
                 if (it.isSuccessful) {
                     Log.d(TAG, "calculate: Data stress berhasil disimpan")
@@ -133,7 +133,7 @@ class DassActivity : AppCompatActivity() {
             }
 
         //save data anxiety
-        ref.collection("Anxiety").document("value").collection(current).document()
+        ref.collection("Anxiety").document("value").collection(current).document(time.toString())
             .set(saveAnxiety).addOnCompleteListener {
                 if (it.isSuccessful) {
                     Toast.makeText(applicationContext, "Data ada berhasil disimpan", Toast.LENGTH_SHORT).show()
@@ -142,6 +142,8 @@ class DassActivity : AppCompatActivity() {
                 }
             }
 
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
         finish()
 
     }
@@ -156,7 +158,7 @@ class DassActivity : AppCompatActivity() {
         val statement1 = ModelDass()
         statement1.id = "1"
         statement1.type = typeStress
-        statement1.statement = "1. Saya marah tentang hal-hal kecil.."
+        statement1.statement = "1. Saya marah tentang hal-hal kecil."
         arraystatement.add(statement1)
         val statement2 = ModelDass()
         statement2.id = "2"
@@ -208,7 +210,7 @@ class DassActivity : AppCompatActivity() {
         val statement11 = ModelDass()
         statement11.id = "11"
         statement11.type = typeStress
-        statement11.statement = "11. Saya mudah tersinggung."
+            statement11.statement = "11. Saya mudah tersinggung."
         arraystatement.add(statement11)
         val statement12 = ModelDass()
         statement12.id = "12"

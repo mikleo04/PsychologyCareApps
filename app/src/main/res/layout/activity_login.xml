@@ -24,7 +24,7 @@
         android:layout_below="@+id/tv_welcome"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:src="@drawable/image_login" />
+        android:src="@drawable/login" />
     <LinearLayout
         android:id="@+id/ly_formlogin"
         android:layout_width="match_parent"

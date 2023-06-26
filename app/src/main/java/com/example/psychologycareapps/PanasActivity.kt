@@ -1,5 +1,6 @@
 package com.example.psychologycareapps
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -54,9 +55,10 @@ class PanasActivity : AppCompatActivity() {
             val formatter = SimpleDateFormat("MM-yyyy")
             val current = formatter.format(time)
             var counter = 0
-            val ref = FirebaseFirestore.getInstance().collection("Panas").document(uid!!).collection("mood").document("value").collection(current)
+            val ref = FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid!!).collection("mood").document("value").collection(current)
             ref.get().addOnSuccessListener { documents ->
                 counter = documents.count()
+                Log.d(TAG, "item data: ${counter}")
 
                 if (counter >= 30) {
                     Toast.makeText(applicationContext, "Anda sudah mencapai batas test", Toast.LENGTH_SHORT).show()
@@ -81,6 +83,7 @@ class PanasActivity : AppCompatActivity() {
     private fun calculate(data: ArrayList<ModelQuestionPanas>, uid: String, current: String) {
         var positif = 0
         var negative = 0
+        var time = Calendar.getInstance().time
 
         //total
         data.forEach {
@@ -93,7 +96,7 @@ class PanasActivity : AppCompatActivity() {
         Log.d(TAG, "calculate: pos: " + positif)
         Log.d(TAG, "calculate: neg: " + negative)
 
-        val ref =  FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid).collection("mood").document("value").collection(current).document()
+        val ref =  FirebaseFirestore.getInstance().collection("Tes Psikologi").document(uid).collection("mood").document("value").collection(current).document(time.toString())
         var result = mapOf<String, String>()
 
         if (positif > negative) {
@@ -107,7 +110,9 @@ class PanasActivity : AppCompatActivity() {
         //upload hasil ke firebase
         ref.set(result).addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(applicationContext, "Data ada berhasil disimpan", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Data anda berhasil disimpan", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
                 finish()
             } else {
                 Toast.makeText(applicationContext, "Data anda gagal disimpan coba lagi beberasaat", Toast.LENGTH_SHORT).show()

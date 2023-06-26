@@ -76,7 +76,7 @@ class ProfileFragment : Fragment() {
 
             val name = et_profileeditname.text.toString()
             val username = et_profileeditusername.text.toString()
-            val email = et_profileeditemail.text.toString()
+//            val email = et_profileeditemail.text.toString()
             val age = et_profileeditage.text.toString()
             val contact = et_profileeditcontact.text.toString()
 
@@ -152,7 +152,7 @@ class ProfileFragment : Fragment() {
                 et_profileeditusername.setText(username.toString())
                 et_profileeditage.setText(age.toString())
                 et_profileeditcontact.setText(contact.toString())
-                et_profileeditemail.setText(email.toString())
+//                et_profileeditemail.setText(email.toString())
 
                 Log.d("Data name", name.toString())
 
